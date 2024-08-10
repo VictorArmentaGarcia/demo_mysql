@@ -18,18 +18,34 @@ import com.demo.mysql.repository.RolRepository;
 import com.demo.mysql.repository.UsuarioRepository;
 import com.demo.mysql.service.UsuarioService;
 
+/**
+ * The Class UsuarioServiceImpl.
+ */
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
+	/**
+	 * Instantiates a new usuario service impl.
+	 *
+	 * @param userRp the user rp
+	 * @param rolRepository the rol repository
+	 */
 	public UsuarioServiceImpl(UsuarioRepository userRp, RolRepository rolRepository){
 		this.userRepo = userRp;
 		this.rolRepo = rolRepository;
 	}
 	
+	/** The user repo. */
 	private UsuarioRepository userRepo;
 	
+	/** The rol repo. */
 	private RolRepository rolRepo;
 	
+	/**
+	 * Gets the usuario.
+	 *
+	 * @return the usuario
+	 */
 	@Override
 	public List<UsuarioModel> getUsuario() {
 		List<UsuarioEntity> usuarios = userRepo.findAll();
@@ -47,6 +63,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 				.toList();
 	}
 
+	/**
+	 * Gets the usuario.
+	 *
+	 * @param id the id
+	 * @return the usuario
+	 */
 	@Override
 	public UsuarioModel getUsuario(int id) {
 		var user = userRepo.findById(id);
@@ -59,6 +81,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return null;
 	}
 
+	/**
+	 * Save usuario.
+	 *
+	 * @param user the user
+	 * @return the usuario model
+	 * @throws BusinessException the business exception
+	 */
 	@Override
 	public UsuarioModel saveUsuario(@Validated UsuarioModel user) throws BusinessException {
 		Optional<RolEntity> rolEntity = rolRepo.findById(user.getIdRol());
@@ -81,6 +110,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 		
 	}
 
+	/**
+	 * Update usuario.
+	 *
+	 * @param user the user
+	 * @return true, if successful
+	 * @throws BusinessException the business exception
+	 */
 	@Override
 	public boolean updateUsuario(UsuarioModel user) throws BusinessException {
 		Optional<RolEntity> rolEntity = rolRepo.findById(user.getIdRol());
@@ -105,6 +141,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 	}
 
+	/**
+	 * Delete usuario.
+	 *
+	 * @param idUsuario the id usuario
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean deleteUsuario(int idUsuario) {
 		Optional<UsuarioEntity> userEntity = userRepo.findById(idUsuario);

@@ -16,15 +16,29 @@ import com.demo.mysql.model.UsuarioModel;
 import com.demo.mysql.repository.RolRepository;
 import com.demo.mysql.service.RolService;
 
+/**
+ * The Class RolServiceImpl.
+ */
 @Service
 public class RolServiceImpl implements RolService {
 
+	/**
+	 * Instantiates a new rol service impl.
+	 *
+	 * @param rolRepo the rol repo
+	 */
 	public RolServiceImpl(RolRepository rolRepo) {
 		this.rolRepository = rolRepo;
 	}
 	
+	/** The rol repository. */
 	private RolRepository rolRepository;
 	
+	/**
+	 * Gets the rol.
+	 *
+	 * @return the rol
+	 */
 	@Override
 	public List<RolModel> getRol() {
 		List<RolEntity> rolEntity = rolRepository.findAll();
@@ -45,10 +59,23 @@ public class RolServiceImpl implements RolService {
 		}).toList();
 	}
 	
+	/**
+	 * Gets the usuario model.
+	 *
+	 * @param user the user
+	 * @return the usuario model
+	 */
 	private UsuarioModel getUsuarioModel(UsuarioEntity user) {
 		return new UsuarioModel(user);
 	}
 
+	/**
+	 * Gets the rol.
+	 *
+	 * @param id the id
+	 * @return the rol
+	 * @throws BusinessException the business exception
+	 */
 	@Override
 	public RolModel getRol(int id) throws BusinessException {
 		Optional<RolEntity> rolEntity = rolRepository.findById(id);
@@ -69,6 +96,13 @@ public class RolServiceImpl implements RolService {
 		throw new BusinessException(EnumHttpStatus.CLIENT_ERROR_BAD_REQUEST, "Rol no existente");
 	}
 
+	/**
+	 * Save rol.
+	 *
+	 * @param rol the rol
+	 * @return the rol model
+	 * @throws BusinessException the business exception
+	 */
 	@Override
 	public RolModel saveRol(RolModel rol) throws BusinessException {
 		try {
@@ -81,6 +115,13 @@ public class RolServiceImpl implements RolService {
 		}
 	}
 
+	/**
+	 * Update rol.
+	 *
+	 * @param rol the rol
+	 * @return true, if successful
+	 * @throws BusinessException the business exception
+	 */
 	@Override
 	public boolean updateRol(RolModel rol) throws BusinessException {
 		Optional<RolEntity> rolEntity = rolRepository.findById(rol.getIdRol());
@@ -96,6 +137,13 @@ public class RolServiceImpl implements RolService {
 		throw new BusinessException(EnumHttpStatus.CLIENT_ERROR_BAD_REQUEST, "Rol no existente");
 	}
 
+	/**
+	 * Delete rol.
+	 *
+	 * @param id the id
+	 * @return true, if successful
+	 * @throws BusinessException the business exception
+	 */
 	@Override
 	public boolean deleteRol(int id) throws BusinessException {
 		Optional<RolEntity> rolEntity = rolRepository.findById(id);
