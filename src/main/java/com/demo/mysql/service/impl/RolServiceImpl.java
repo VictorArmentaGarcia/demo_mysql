@@ -1,10 +1,11 @@
 package com.demo.mysql.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 
 import com.demo.mysql.entity.RolEntity;
@@ -15,6 +16,7 @@ import com.demo.mysql.model.RolModel;
 import com.demo.mysql.model.UsuarioModel;
 import com.demo.mysql.repository.RolRepository;
 import com.demo.mysql.service.RolService;
+import com.demo.mysql.validation.ValidateRol;
 
 /**
  * The Class RolServiceImpl.
@@ -22,6 +24,12 @@ import com.demo.mysql.service.RolService;
 @Service
 public class RolServiceImpl implements RolService {
 
+	/** The mensaje vacio. */
+	private static final String MENSAJE_VACIO = "Rol no existente";
+	
+	/** The mensaje error. */
+	private static final String MENSAJE_ERROR = "Inconveniente al guardar rol";
+	
 	/**
 	 * Instantiates a new rol service impl.
 	 *
@@ -34,6 +42,9 @@ public class RolServiceImpl implements RolService {
 	/** The rol repository. */
 	private RolRepository rolRepository;
 	
+	@Autowired
+	private ValidateRol valida;
+	
 	/**
 	 * Gets the rol.
 	 *
@@ -43,7 +54,7 @@ public class RolServiceImpl implements RolService {
 	public List<RolModel> getRol() {
 		List<RolEntity> rolEntity = rolRepository.findAll();
 		if(rolEntity.isEmpty()) {
-			return new ArrayList<RolModel>();
+			return null;
 		}
 
 		return rolEntity.stream().map(r->{
@@ -91,7 +102,7 @@ public class RolServiceImpl implements RolService {
 			return rolModel;
 		}
 		
-		throw new BusinessException(EnumHttpStatus.CLIENT_ERROR_BAD_REQUEST, "Rol no existente");
+		throw new BusinessException(EnumHttpStatus.CLIENT_ERROR_BAD_REQUEST, MENSAJE_VACIO);
 	}
 
 	/**
@@ -104,12 +115,13 @@ public class RolServiceImpl implements RolService {
 	@Override
 	public RolModel saveRol(RolModel rol) throws BusinessException {
 		try {
+			valida.ValidaRolSave(rol);
 			rol.setIdRol(0);
 			RolEntity rolEntity = new RolEntity(rol);
 			rolRepository.save(rolEntity);
 			return new RolModel(rolEntity);	
 		} catch (Exception e) {
-			throw new BusinessException(EnumHttpStatus.CLIENT_ERROR_BAD_REQUEST, "Inconveniente al guardar rol");
+			throw new BusinessException(EnumHttpStatus.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
 		}
 	}
 
@@ -132,7 +144,7 @@ public class RolServiceImpl implements RolService {
 			return true;
 		}
 		
-		throw new BusinessException(EnumHttpStatus.CLIENT_ERROR_BAD_REQUEST, "Rol no existente");
+		throw new BusinessException(EnumHttpStatus.CLIENT_ERROR_BAD_REQUEST, MENSAJE_VACIO);
 	}
 
 	/**
@@ -150,7 +162,7 @@ public class RolServiceImpl implements RolService {
 			return true;
 		}
 		
-		throw new BusinessException(EnumHttpStatus.CLIENT_ERROR_BAD_REQUEST, "Rol no existente");
+		throw new BusinessException(EnumHttpStatus.CLIENT_ERROR_BAD_REQUEST, MENSAJE_VACIO);
 	}
 
 }
