@@ -111,6 +111,12 @@ public class RolControllerImpl implements RolController {
 		}
 	}
 
+	/**
+	 * Gets the busines.
+	 *
+	 * @param be the be
+	 * @return the busines
+	 */
 	private Object getBusines(BusinessException be) {
 		int numberHTTPDesired = Integer.parseInt(be.getErrorResponse().getCode());
 		return new ResponseEntity<>(be.getErrorResponse(), HttpStatus.valueOf(numberHTTPDesired));

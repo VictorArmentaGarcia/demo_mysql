@@ -51,8 +51,7 @@ public class RolServiceImpl implements RolService {
 			List<UsuarioModel> lUser = 
 					r.getUsuarios()
 					.stream()
-					.map(user-> 
-						{ return getUsuarioModel(user); })
+					.map(user->getUsuarioModel(user))
 					.toList();
 			rolModel.setUsuarios(lUser);
 			return rolModel;
@@ -85,8 +84,7 @@ public class RolServiceImpl implements RolService {
 					.get()
 					.getUsuarios()
 					.stream()
-					.map(user-> 
-						{ return getUsuarioModel(user); })
+					.map(user-> getUsuarioModel(user))
 					.toList();
 			RolModel rolModel = new RolModel(rolEntity.get());
 			rolModel.setUsuarios(lUser);
